@@ -1,8 +1,5 @@
 export function getType(val: any): string {
-  return Object.prototype.toString
-    .call(val)
-    .slice(8, -1)
-    .toLowerCase()
+  return Object.prototype.toString.call(val).slice(8, -1).toLowerCase()
 }
 
 export function isDate(val: any): val is Date {

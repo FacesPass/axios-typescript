@@ -11,19 +11,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.responseType = responseType
     }
 
-    request.open(method.toUpperCase(), url, true)
-
-    Object.keys(headers).forEach(name => {
-      if (data === null && name.toLowerCase() === 'content-type') {
-        delete headers[name]
-      } else {
-        request.setRequestHeader(name, headers[name])
-      }
-    })
-
-    request.send(data)
-
-    request.onreadystatechange = () => {
+    request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {
         return
       }
@@ -42,6 +30,18 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
       resolve(response)
     }
+
+    request.open(method.toUpperCase(), url, true)
+
+    Object.keys(headers).forEach(name => {
+      if (data === null && name.toLowerCase() === 'content-type') {
+        delete headers[name]
+      } else {
+        request.setRequestHeader(name, headers[name])
+      }
+    })
+
+    request.send(data)
 
     request.onerror = err => {
       reject(err)

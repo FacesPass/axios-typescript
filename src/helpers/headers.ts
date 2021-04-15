@@ -20,7 +20,7 @@ export function processHeaders(headers: any, data: any): any {
   //如果传入参数是对象并且没有设置content-type我们给它默认加上
   if (isPlainObject(data)) {
     if (headers && !headers['Content-Type']) {
-      headers['Content-Type'] = 'application/json;charset=utf-8;'
+      headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }
 

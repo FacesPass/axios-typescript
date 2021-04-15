@@ -13,8 +13,8 @@ function axios(config: AxiosRequestConfig): AxiosPromise {
 }
 
 function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
   config.headers = transformHeaders(config)
+  config.url = transformURL(config)
   config.data = transformRequestData(config)
 }
 
@@ -35,6 +35,7 @@ function transformHeaders(config: AxiosRequestConfig): any {
   return processHeaders(headers, data)
 }
 
+//对接口返回的data做转换
 function transformResponseData(res: AxiosResponse) {
   res.data = transformResponse(res.data)
   return res
