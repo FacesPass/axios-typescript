@@ -1,14 +1,15 @@
 import { isDate, isPlainObject } from './utils'
 
+//解码，将特殊字符转换回原来的样子
 function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
-    .replace(/%3A/ig, ':')
+    .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')
     .replace(/%20/g, '+')
-    .replace(/%2C/ig, ',')
-    .replace(/%5B/ig, '[')
-    .replace(/%5D/ig, ']')
+    .replace(/%2C/gi, ',')
+    .replace(/%5B/gi, '[')
+    .replace(/%5D/gi, ']')
 }
 
 export function buildURL(url: string, params?: any): string {
