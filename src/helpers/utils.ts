@@ -11,7 +11,7 @@ export function isPlainObject(val: any): val is Object {
   return getType(val) === 'object'
 }
 
-//继承函数  
+//把from全部拷贝到to里
 export function extend<T, U>(to: T, from: U): T & U {
   for (const key in from) {
     (to as T & U)[key] = from[key] as any

@@ -16,6 +16,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout
     }
 
+    request.onerror = function handleError() {
+      reject(createError('Network Error', config, null, request))
+    }
+
     request.ontimeout = function handleTimeout() {
       reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
     }
@@ -42,10 +46,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
 
       handleResponse(response)
-    }
-
-    request.onerror = function handleError() {
-      reject(createError('Network Error', config, null, request))
     }
 
     request.open(method.toUpperCase(), url!, true)

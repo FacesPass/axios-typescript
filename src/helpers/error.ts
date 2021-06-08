@@ -8,8 +8,12 @@ export class AxiosError extends Error {
   request?: any
   response?: AxiosResponse
 
-  constructor(message: string, config: AxiosRequestConfig,
-    code?: string | null, request?: any, response?: AxiosResponse) {
+  constructor(
+    message: string,
+    config: AxiosRequestConfig,
+    code?: string | null,
+    request?: any,
+    response?: AxiosResponse) {
     super(message)
 
     this.config = config
