@@ -24,5 +24,21 @@ export default class InterceptorManager<T> {
     return this.interceptors.length - 1
   }
 
+  //依次执行拦截器数组，参数传入拦截器
+  forEach(fn: (interceptor: Interceptor<T>) => void): void {
+    this.interceptors.forEach((interceptor) => {
+      if (interceptor !== null) {
+        fn(interceptor)
+      }
+    })
+  }
+
+  //取消拦截器
+  eject(id: number): void {
+    if (this.interceptors[id]) {
+      this.interceptors[id] = null
+    }
+  }
+
 
 }
