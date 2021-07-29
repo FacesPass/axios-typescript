@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig, AxiosResponse, Method, RejectFn, Reso
 import dispatchRequest from "./dispatchRequest";
 import InterceptorManager from "./InterceptorManager";
 
-//拦截器
+//拦截器类型
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
   response: InterceptorManager<AxiosResponse>
@@ -15,9 +15,11 @@ interface PromiseChain {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(), //请求拦截器管理类实例   
       response: new InterceptorManager<AxiosResponse>() //响应拦截器管理类实例
@@ -41,16 +43,19 @@ export default class Axios {
       rejected: undefined
     }]
 
+    //请求拦截器后添加的要先执行
     this.interceptors.request.forEach(interceptor => {
       chain.unshift(interceptor)
     })
 
+    //响应拦截器是先添加的先执行
     this.interceptors.response.forEach(interceptor => {
       chain.push(interceptor)
     })
 
     let promise = Promise.resolve(config)
 
+    //拦截器链式调用逻辑
     while (chain.length) {
       const { resolved, rejected } = chain.shift()!
       promise = promise.then(resolved, rejected)

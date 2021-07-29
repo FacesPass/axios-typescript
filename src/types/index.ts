@@ -17,12 +17,14 @@ export type Method =
 //axios配置信息接口
 export interface AxiosRequestConfig {
   url?: string
-  method?: string
+  method?: Method
   headers?: any
   data?: any
   params?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+
+  [key: string]: any
 }
 
 //返回数据格式的接口
@@ -50,6 +52,12 @@ export interface AxiosError extends Error {
 
 //Axios导出接口
 export interface Axios {
+  defaults: AxiosRequestConfig
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse>
+  }
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>  //request方法
 
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -70,7 +78,7 @@ export interface AxiosInstance extends Axios {
 }
 
 
-//拦截器接口定义,泛型接口
+//拦截器接口定义,泛型接口，返回类型为number，返回当前拦截器的id，可以给eject用来删除当前拦截器
 export interface AxiosInterceptorManager<T> {
   use(resolve: ResolveFn<T>, reject?: RejectFn): number
 

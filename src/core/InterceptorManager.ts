@@ -2,12 +2,11 @@ import type { ResolveFn, RejectFn } from '../types'
 
 export interface Interceptor<T> {
   resolved: ResolveFn<T>
-  rejected: RejectFn
+  rejected?: RejectFn
 }
 
-
 export default class InterceptorManager<T> {
-  private interceptors: Array<Interceptor<T> | null>
+  private interceptors: (Interceptor<T> | null)[]
 
   constructor() {
     //用来存储拦截器
@@ -15,16 +14,17 @@ export default class InterceptorManager<T> {
   }
 
 
-  use(resolved: ResolveFn<T>, rejected: RejectFn): number {
+  use(resolved: ResolveFn<T>, rejected?: RejectFn): number {
     this.interceptors.push({
       resolved,
       rejected
     })
 
+    //返回拦截器的id，实际可以返回当前拦截器数组的长度
     return this.interceptors.length - 1
   }
 
-  //依次执行拦截器数组，参数传入拦截器
+  //内部使用的方法，不通过接口暴露。依次执行拦截器数组，参数传入拦截器
   forEach(fn: (interceptor: Interceptor<T>) => void): void {
     this.interceptors.forEach((interceptor) => {
       if (interceptor !== null) {
@@ -39,6 +39,4 @@ export default class InterceptorManager<T> {
       this.interceptors[id] = null
     }
   }
-
-
 }
