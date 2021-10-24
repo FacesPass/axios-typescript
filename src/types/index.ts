@@ -24,7 +24,7 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   timeout?: number
 
-  [key: string]: any
+  [propName: string]: any
 }
 
 //返回数据格式的接口
@@ -70,7 +70,7 @@ export interface Axios {
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
-//混合接口
+//混合接口，类型重载
 export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
 
