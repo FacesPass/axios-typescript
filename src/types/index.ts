@@ -24,6 +24,9 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   timeout?: number
 
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
   [propName: string]: any
 }
 
@@ -77,6 +80,11 @@ export interface AxiosInstance extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+//Axios实例创建的静态方法
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
+
 
 //拦截器接口定义,泛型接口，返回类型为number，返回当前拦截器的id，可以给eject用来删除当前拦截器
 export interface AxiosInterceptorManager<T> {
@@ -93,3 +101,7 @@ export interface RejectFn {
   (err: any): any
 }
 
+
+export interface AxiosTransformer {
+  (data: any, headers: any): any
+}
